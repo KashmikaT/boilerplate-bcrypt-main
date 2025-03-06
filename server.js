@@ -11,13 +11,13 @@ const saltRounds = 12;
 const myPlaintextPassword = 'sUperpassw0rd!';
 const someOtherPlaintextPassword = 'pass123';
 
-//START_ASYNC
+// START_ASYNC
 bcrypt.hash(myPlaintextPassword, saltRounds, (err, hash) => {
     if (err) {
         console.error(err);
         return;
     }
-    console.log("Async Hash:", hash); // Log the generated hash
+    console.log("Async Hash:", hash); // Log the generated async hash
 
     // Compare async
     bcrypt.compare(myPlaintextPassword, hash, (err, res) => {
@@ -26,31 +26,17 @@ bcrypt.hash(myPlaintextPassword, saltRounds, (err, hash) => {
             return;
         }
         console.log("Async Password Match:", res); // Should print true
-
-        // Compare with wrong password
-        bcrypt.compare(someOtherPlaintextPassword, hash, (err, res) => {
-            if (err) {
-                console.error(err);
-                return;
-            }
-            console.log("Async Wrong Password Match:", res); // Should print false
-        });
     });
 });
-//END_ASYNC
+// END_ASYNC
 
-//START_SYNC
+// START_SYNC
 const syncHash = bcrypt.hashSync(myPlaintextPassword, saltRounds);
 console.log("Sync Hash:", syncHash); // Log the generated sync hash
 
-// Compare sync
 const syncResult = bcrypt.compareSync(myPlaintextPassword, syncHash);
 console.log("Sync Password Match:", syncResult); // Should print true
-
-// Compare with wrong password
-const syncWrongResult = bcrypt.compareSync(someOtherPlaintextPassword, syncHash);
-console.log("Sync Wrong Password Match:", syncWrongResult); // Should print false
-//END_SYNC
+// END_SYNC
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
